@@ -1,7 +1,10 @@
 # mock-auth-backend
 > A mock backend to test JWT auth.
 
-## Config
+## Install
+Install with `npm install`.
+
+## Configure
 Edit `config/default.json` to configure.
 
 ```javascript
@@ -13,7 +16,7 @@ Edit `config/default.json` to configure.
     "authenticationRoute": "/auth",
     "authorizationRoute": "/protected",
 
-    //Define all roles known the the backend
+    //Define all roles known to the backend
     "roles": ["admin"]
 
     //Additional routes that need a specific role for authorization
