@@ -9,8 +9,9 @@ Edit `config/default.json` to configure.
 
 ```javascript
 {
-    "port": 8085,
-    "secret": "supda-dupa-secret",
+    "port": 8085, //Port to serve on
+    "secret": "supda-dupa-secret", //Secret for the JWT
+    "debugOutput": true, //Whether to print debug output to the console
 
     //Modify those to mimick the backend API you are mocking
     "authenticationRoute": "/auth",
@@ -56,4 +57,8 @@ The following routes are available (paths can be changed in the config, see abov
 | POST  | /auth | `{identifier: "identifier", password: "password"}` | `{success: true, token: "token"}` | `{success: false, message: "Error message."}` |
 | GET  | /protected | - | `{success: true}` | `{success: false, message: "Error message."}` |
 
-Additional `GET` authorization routes are available, if set through the `routes` config methods. Those are meant to authorize only if the token contains a certain role (see section about configuration above).
+Additional `GET` authorization routes are available, if set through the `routes` config methods. Those are meant to authorize only if the token contains a certain role (see section about configuration above):
+
+| Method  | Path | Body | Positive response | Negative response
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| GET  | * | - | `{success: true}` | `{success: false, message: "Error message."}` |

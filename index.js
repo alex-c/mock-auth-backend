@@ -33,15 +33,17 @@ for (var i = 0; i < routes.length; i++) {
         if (req.token[route.role] == true) {
             res.json({success: true});
         } else {
-            next(new Error("Authorization failed."));
+            next(new Error("Role authorization failed."));
         }
     });
 }
 
 //Error handling
 app.use(function (err, req, res, next) {
-    console.error(err.stack);
+    if (config.get('debugOutput')) {
+        console.error(err.stack);
+    }
     res.status(500).send({success: false, message: err.message});
 });
 
-app.listen(config.get('port'), () => console.log('Mock auth server listening on port ' + config.get('port') + '.'));
+app.listen(config.get('port'), () => console.log(' +-----\n | Mock auth server listening on port ' + config.get('port') + '...\n +-----'));
