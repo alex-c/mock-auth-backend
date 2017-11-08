@@ -2,7 +2,7 @@
 > A mock backend to test JWT auth.
 
 ## Install
-Install with `npm install`.
+Requires `node` and `npm`. Install with `npm install`.
 
 ## Configure
 Edit `config/default.json` to configure.
@@ -47,3 +47,13 @@ Edit `accounts.json` to set up a few users. Default is:
 
 ## Run
 Run the server with `node index.js`.
+
+## Query
+The following routes are available (paths can be changed in the config, see above):
+
+| Method  | Path | Body | Positive response | Negative response
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| POST  | /auth | `{identifier: "identifier", password: "password"}` | `{success: true, token: "token"}` | `{success: false, message: "Error message."}` |
+| GET  | /protected | - | `{success: true}` | `{success: false, message: "Error message."}` |
+
+Additional `GET` authorization routes are available, if set through the `routes` config methods. Those are meant to authorize only if the token contains a certain role (see section about configuration above).
