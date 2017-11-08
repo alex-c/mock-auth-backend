@@ -1,7 +1,13 @@
 {
     "port": 8085,
     "secret": "supda-dupa-secret",
-    "authRoute": "/auth",
-    "protectedRoute": "/protected",
-    "roles": ["admin"]
+    "authenticationRoute": "/auth",
+    "authorizationRoute": "/protected",
+    "roles": ["admin"],
+    "routes": [
+        {
+            "path": "/admin",
+            "role": "admin"
+        }
+    ]
 }

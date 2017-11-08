@@ -2,7 +2,10 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const accounts = require('./accounts.json');
 
+//Bundles the actual authentication/authorization logic
 var AuthModule = {
+
+    //Method that attempts to authenticate a user and deliver a JWT
     authenticate: function(identifier, password) {
         for (var i = 0; i < accounts.length; i++) {
             var account = accounts[i];
@@ -24,6 +27,8 @@ var AuthModule = {
         }
         throw new Error("Authentication failed.");
     },
+
+    //Express middleware that authorizes a route using the JWT token supplied in the authorization header
     authorize: function(req, res, next) {
         var authHeader= req.headers['authorization']
         if (authHeader) {
@@ -38,7 +43,6 @@ var AuthModule = {
         } else {
             next(new Error("Authorization failed."));
         }
-
     }
 }
 
