@@ -10,6 +10,7 @@ Edit `config/default.json` to configure.
 ```javascript
 {
     "port": 8085, //Port to serve on
+    "cors-origin": "http://localhost:8080", //Origin of CORS requests to allow. Set to "*" to allow all origins.
     "secret": "supda-dupa-secret", //Secret for the JWT
     "debugOutput": true, //Whether to print debug output to the console
 

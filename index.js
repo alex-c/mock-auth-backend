@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const config = require('config');
 const bodyParser = require('body-parser');
 
@@ -9,6 +10,13 @@ const auth = require('./auth.js');
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+var corsOrigin = config.get('cors-origin');
+if (corsOrigin == "*") {
+    app.use(cors());
+} else {
+    app.use(cors({origin: }));
+}
+
 
 //Authentication route
 app.post(config.get('authenticationRoute'), function(req, res, next) {
