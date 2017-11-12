@@ -14,7 +14,7 @@ var corsOrigin = config.get('cors-origin');
 if (corsOrigin == "*") {
     app.use(cors());
 } else {
-    app.use(cors({origin: }));
+    app.use(cors({origin: corsOrigin}));
 }
 
 
