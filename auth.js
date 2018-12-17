@@ -52,7 +52,7 @@ var AuthModule = {
                 }
             });
         } else {
-            next(new Error("Authorization failed."));
+            res.status(401).end();
         }
     }
 }

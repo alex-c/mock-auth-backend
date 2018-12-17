@@ -21,8 +21,12 @@ if (corsOrigin == "*") {
 //Authentication route
 app.post(config.get('authenticationRoute'), function(req, res, next) {
     try {
-        var token = auth.authenticate(req.body.identifier, req.body.password);
-        res.json({success: true, message: 'Login successful!', token: token});
+        try {
+            var token = auth.authenticate(req.body.identifier, req.body.password);
+            res.json({success: true, message: 'Login successful!', token: token});
+        } catch (error) {
+            res.status(401).end();
+        }
     } catch (error) {
         next(error);
     }
@@ -41,7 +45,7 @@ for (var i = 0; i < routes.length; i++) {
         if (req.token[route.role] == true) {
             res.json({success: true});
         } else {
-            next(new Error("Role authorization failed."));
+            res.status(401).end();
         }
     });
 }
