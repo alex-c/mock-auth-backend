@@ -64,3 +64,5 @@ Additional `GET` authorization routes are available, if set through the `routes`
 | Method  | Path | Body | Positive response | Negative response
 | ------------- | ------------- | ------------- | ------------- | ------------- |
 | GET  | /admin | - | `{"message": "Successfully authorized with role 'admin'!"}` | Status 401 Unauthorized |
+
+The `test` directory of this repo contains an export of an [Insomnia](https://insomnia.rest/) workspace. You can import it into Insomnia in order to get ready-to-send queries for the default routes set up!
