@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 
 // Load the auth module
 const auth = require('./auth.js');
+const authorize = require('./middleware/authorize.js');
 
 // Configure Express
 const app = express();
@@ -17,23 +18,25 @@ if (corsOrigin === '*') {
   app.use(cors({ origin: corsOrigin }));
 }
 
+// Load custom middleware
+const injectRequestId = require('./middleware/injectRequestId.js');
+const setLogging = require('./middleware/setLogging.js');
+app.use(injectRequestId);
+app.use(setLogging);
+
 // Authentication route
 app.post(config.get('authenticationRoute'), function (req, res, next) {
   let token = null;
   try {
     token = auth.authenticate(req.body.identifier, req.body.password);
+    res.json({ message: 'Login successful!', token: token });
   } catch (error) {
     res.status(401).end();
-  }
-  if (token !== null) {
-    res.json({ message: 'Login successful!', token: token });
-  } else {
-    next(error);
   }
 });
 
 // Authorization route
-app.get(config.get('authorizationRoute'), auth.authorize, function (req, res) {
+app.get(config.get('authorizationRoute'), authorize, function (req, res) {
   res.json({ message: 'Successfully authorized!' });
 });
 
@@ -41,7 +44,7 @@ app.get(config.get('authorizationRoute'), auth.authorize, function (req, res) {
 var routes = config.get('routes');
 for (var i = 0; i < routes.length; i++) {
   var route = routes[i];
-  app.get(route.path, auth.authorize, function (req, res, next) {
+  app.get(route.path, authorize, function (req, res, next) {
     if (req.token[route.role] === true) {
       res.json({
         message: `Successfully authorized with role '${route.role}'!`,

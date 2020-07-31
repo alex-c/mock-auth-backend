@@ -34,26 +34,6 @@ const AuthModule = {
     }
     throw new Error('Authentication failed.');
   },
-
-  // Express middleware that authorizes a route using the JWT token supplied in the authorization header
-  authorize: function (req, res, next) {
-    const authHeader = req.headers['authorization'];
-    if (authHeader) {
-      let token = authHeader.substr(authHeader.indexOf(' ') + 1);
-      debug(`[Auth] Attempting to authorize with token ${token}...`);
-      jwt.verify(token, config.get('secret'), function (error, decoded) {
-        if (error) {
-          res.status(401).end();
-        } else {
-          req.token = decoded;
-          debug(`[Auth] Authorization successful. Decoded token: ${JSON.stringify(decoded)}`);
-          next();
-        }
-      });
-    } else {
-      res.status(401).end();
-    }
-  },
 };
 
 module.exports = AuthModule;
