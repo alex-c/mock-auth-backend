@@ -63,17 +63,16 @@ for (var i = 0; i < routes.length; i++) {
   });
 }
 
-// Error handling
-app.use(function (err, req, res, next) {
-  if (config.get('debugOutput')) {
-    console.error(err.stack);
-  }
-  res.status(500).json({ message: err.message });
-});
-
 // 404 - Route not found
 app.use(function (req, res, next) {
+  req.log(`Unknown route '${req.path}' requested.`);
   res.status(404).json({ message: `Route not found!` });
+});
+
+// Error handling
+app.use(function (err, req, res, _) {
+  req.log(err.stack);
+  res.status(500).json({ message: err.message });
 });
 
 // Start listening for requests
