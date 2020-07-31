@@ -6,13 +6,13 @@ module.exports = function (req, res, next) {
   const authHeader = req.headers['authorization'];
   if (authHeader) {
     let token = authHeader.substr(authHeader.indexOf(' ') + 1);
-    req.log(`[Auth] Attempting to authorize with token ${token}...`);
+    req.log(`Attempting to authorize with token ${token}...`);
     jwt.verify(token, config.get('secret'), function (error, decoded) {
       if (error) {
         res.status(401).end();
       } else {
         req.token = decoded;
-        req.log(`[Auth] Authorization successful. Decoded token: ${JSON.stringify(decoded)}`);
+        req.log(`Authorization successful. Decoded token: ${JSON.stringify(decoded)}`);
         next();
       }
     });

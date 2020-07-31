@@ -4,7 +4,7 @@ const config = require('config');
 const bodyParser = require('body-parser');
 
 // Load the auth module
-const auth = require('./auth.js');
+const authenticate = require('./authenticate.js');
 const authorize = require('./middleware/authorize.js');
 
 // Configure Express
@@ -25,13 +25,21 @@ app.use(injectRequestId);
 app.use(setLogging);
 
 // Authentication route
-app.post(config.get('authenticationRoute'), function (req, res, next) {
-  let token = null;
-  try {
-    token = auth.authenticate(req.body.identifier, req.body.password);
-    res.json({ message: 'Login successful!', token: token });
-  } catch (error) {
-    res.status(401).end();
+app.post(config.get('authenticationRoute'), function (req, res) {
+  if (req.body.identifier && req.body.password) {
+    req.log(`Attempting to authenticate user with ID '${req.body.identifier}'.`);
+    let token = null;
+    try {
+      token = authenticate(req.body.identifier, req.body.password);
+      req.log(`Authentication of user with ID '${req.body.identifier}' successful! Token: ${token}`);
+      res.json({ message: 'Login successful!', token: token });
+    } catch (error) {
+      req.log(`Authentication of user with ID '${req.body.identifier}' failed.`);
+      res.status(401).end();
+    }
+  } else {
+    req.log('Authentication request failed because of missing login credentials.');
+    res.status(400).json({ message: 'Request missing login credentials.' });
   }
 });
 
